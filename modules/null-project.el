@@ -11,7 +11,6 @@
   (dumb-jump-prefer-searcher 'rg))
 
 (use-package compile
-  :ensure nil ; built-in
   :config
   ;; Handle ansi characters in compilation buffer
   ;; https://emacs.stackexchange.com/questions/8135/why-does-compilation-buffer-show-control-characters
@@ -22,7 +21,6 @@
   (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
 
 (use-package project
-  :ensure nil ; built-in
   :config
   ;; Handle ansi characters in compilation buffer
   ;; https://emacs.stackexchange.com/questions/8135/why-does-compilation-buffer-show-control-characters
@@ -56,14 +54,13 @@
 ;;; Version control
 
 (use-package ediff
-  :ensure nil ; built-in
   :custom
   (ediff-keep-variants nil)
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-highlight-all-diffs t))
 
-(use-package transient :ensure t)
+(use-package transient)
 
 (use-package magit
   :custom
@@ -81,7 +78,6 @@
 (use-package hydra)
 
 (use-package smerge-mode
-  :ensure nil ; built-in
   :after hydra
   :config
   (defhydra unpackaged/smerge-hydra
@@ -143,7 +139,6 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 ;; Use ripgrep over grep
 (use-package grep
-  :ensure nil ; built-in
   :config
   (grep-apply-setting
    'grep-find-command

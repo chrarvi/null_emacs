@@ -30,7 +30,6 @@
 (require 'null-keybinds)
 
 (use-package zig-mode
-  :ensure t
   :custom
   (zig-format-on-save nil))
 

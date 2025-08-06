@@ -9,7 +9,6 @@
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package corfu
-  :ensure (:files (:defaults "extensions/*"))
   :after orderless
   :general (:keymaps 'corfu-mode-map
                      "M-m" #'corfu-move-to-minibuffer)

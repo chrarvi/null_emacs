@@ -77,7 +77,7 @@
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
-  :ensure (:host github :repo "LuigiPiucco/nerd-icons-corfu")
+  :vc (:url "https://github.com/LuigiPiucco/nerd-icons-corfu")
   :after (nerd-icons corfu)
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))

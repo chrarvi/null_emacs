@@ -28,14 +28,13 @@
 (require 'null-keybinds)
 
 (use-package copilot
-    :ensure (:host github :repo "copilot-emacs/copilot.el")
+    :vc (:url "https://github.com/copilot-emacs/copilot.el")
     :custom
     (copilot-idle-delay 0.1)
     :general (:keymaps 'copilot-completion-map
                        "M-]" 'copilot-accept-completion))
 
 (use-package gptel
-  :ensure t
   :custom
   (gptel-org-branching-context t)
   :config

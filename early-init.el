@@ -14,7 +14,7 @@
 (defvar null-bootstrap-directory (expand-file-name "bootstrap/" user-emacs-directory)
   "Package system bootstrap configuration.")
 
-(load (expand-file-name "null-elpaca-bootstrap.el" null-bootstrap-directory))
+(load (expand-file-name "null-package-bootstrap.el" null-bootstrap-directory))
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 100 1000 1000))
