@@ -197,11 +197,17 @@ If STR is nil, treat it as an empty string."
         (concat truncated-str (make-string (- max-width (string-width truncated-str)) ? ))
       truncated-str)))
 
+(use-package org-mem
+  :defer
+  :config
+  (setq org-mem-do-sync-with-org-id 1)
+  (setq org-mem-watch-dirs (list (expand-file-name "articles" null/orbit-directory)))
+  (org-mem-updater-mode))
+
 (use-package org-node
   :after org
   :custom
   (org-node-extra-id-dirs (list (expand-file-name "articles" null/orbit-directory)))
-  (org-node-complete-at-point)
   (org-node-alter-candidates t)
 
   (org-node-affixation-fn
@@ -211,24 +217,19 @@ If STR is nil, treat it as an empty string."
                     (concat "#" (string-join tags " #"))))
             (padded-title (null/pad-or-truncate-string title 150 "..."))
             (padded-tags (null/pad-or-truncate-string tags 30 "..."))
-            (filepath (f-filename (org-node-get-file-path node))))
+            (filepath (f-filename (org-mem-file-truename node))))
        (list nil padded-title
              (concat
               (propertize padded-tags 'face 'font-lock-keyword-face)
               (propertize filepath 'face 'org-tag))))))
 
+  (org-node-creation-fn #'org-node-new-via-roam-capture)
+  (org-node-file-slug-fn #'org-node-slugify-like-roam-default)
+  (org-node-file-timestamp-format "%Y%m%d%H%M%S-")
   :config
   (org-node-cache-mode)
+  (org-node-roam-accelerator-mode)
   (org-node-complete-at-point-mode t))
-
-(use-package org-node-fakeroam
-  :defer
-  :custom
-  (org-node-creation-fn #'org-node-fakeroam-new-via-roam-capture)
-  (org-node-slug-fn #'org-node-fakeroam-slugify-via-roam)
-  (org-node-datestamp-format "%Y%m%d%H%M%S-")
-  :config
-  (org-node-fakeroam-fast-render-mode))
 
 ;; Review dependencies
 (use-package ht)
@@ -245,15 +246,6 @@ If STR is nil, treat it as an empty string."
   (:states '(normal) :keymaps 'org-roam-review-mode-map
            "TAB" 'magit-section-cycle
            "g r" 'org-roam-review-refresh))
-
-(use-package org-roam-ui
-  :after org-roam
-  :defer t
-  :custom
-  (org-roam-ui-sync-theme t)
-  (org-roam-ui-follow t)
-  (org-roam-ui-update-on-save t)
-  (org-roam-ui-open-on-start nil))
 
 (defcustom writeroom-text-scale 2.0 "Scale increase for text in writeroom." :type 'integer)
 
