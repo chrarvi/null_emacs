@@ -271,7 +271,7 @@ If STR is nil, treat it as an empty string."
   :hook (org-mode . mixed-pitch-mode))
 
 (use-package jinx
-  :hook (elpaca-after-init-hook . global-jinx-mode)
+  :hook (after-init-hook . global-jinx-mode)
   :general (:states '(normal) :keymaps 'jinx-mode-map
            "z =" 'jinx-correct))
 

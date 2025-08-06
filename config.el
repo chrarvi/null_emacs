@@ -46,8 +46,6 @@
 (require 'null-rss)
 (require 'null-llm)
 
-(elpaca-wait)
-
 ;; Personal information
 (setq user-full-name "Christoffer Arvidsson"
       user-mail-address "christoffer@arvidson.nu")
@@ -97,7 +95,6 @@
 ;; Reload the font
 (fontaine-set-preset null-font-preset)
 
-(elpaca-wait)
 (load-theme null-theme t)
 
 (provide 'config)
