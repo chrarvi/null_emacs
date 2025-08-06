@@ -8,5 +8,6 @@ etc/
 elpy/
 tree-sitter/
 /.local/
+.git
 
 secrets.el
