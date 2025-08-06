@@ -12,10 +12,6 @@
     (package-refresh-contents)))
 
 (require 'use-package-ensure)
-(setq use-package-always-pin  "melpa"
-      use-package-always-ensure t
-      use-package-compute-statistics t
-      use-package-verbose t
-      use-package-always-defer nil)
+(setq use-package-always-ensure t)
 
 (provide 'null-package/package)
