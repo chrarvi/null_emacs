@@ -235,17 +235,17 @@ If STR is nil, treat it as an empty string."
 (use-package ht)
 (use-package ts)
 
-(use-package org-roam-review
-  :ensure (:host github :repo "chrisbarrett/nursery" :files ("lisp/org-roam-review.el" "lisp/org-tags-filter.el" "lisp/plisty.el"))
-  :after (org-roam org-drill ts)
-  :hook (org-roam-capture-new-node . org-roam-review-set-seedling)
-  :commands (org-roam-review
-             org-roam-review-list-by-maturity
-             org-roam-review-list-recently-added)
-  :general
-  (:states '(normal) :keymaps 'org-roam-review-mode-map
-           "TAB" 'magit-section-cycle
-           "g r" 'org-roam-review-refresh))
+;; (use-package org-roam-review
+;;   :vc (:url "https://github.com/chrisbarrett/nursery" :lisp-dir "lisp" :main-file "org-roam-review.el")
+;;   :after (org-roam org-drill ts)
+;;   :hook (org-roam-capture-new-node . org-roam-review-set-seedling)
+;;   :commands (org-roam-review
+;;              org-roam-review-list-by-maturity
+;;              org-roam-review-list-recently-added)
+;;   :general
+;;   (:states '(normal) :keymaps 'org-roam-review-mode-map
+;;            "TAB" 'magit-section-cycle
+;;            "g r" 'org-roam-review-refresh))
 
 (defcustom writeroom-text-scale 2.0 "Scale increase for text in writeroom." :type 'integer)
 
@@ -311,14 +311,14 @@ If STR is nil, treat it as an empty string."
   "n d p" '(org-roam-dailies-goto-previous-note :wk "find previous note")
   "n d n" '(org-roam-dailies-goto-next-note :wk "find next note")
 
-  "n e" '(:ignore t :wk "Org roam review")
-  "n e a" '(org-roam-review-accept :wk "accept")
-  "n e b" '(org-roam-review-set-budding :wk "set budding")
-  "n e e" '(org-roam-review-set-evergreen :wk "set evergreen")
-  "n e r" '(org-roam-review :wk "review")
-  "n e s" '(org-roam-review-set-seedling :wk "set seedling")
-  "n e u" '(org-roam-review-bury :wk "bury")
-  "n e x" '(org-roam-review-set-excluded :wk "set excluded")
+  ;; "n e" '(:ignore t :wk "Org roam review")
+  ;; "n e a" '(org-roam-review-accept :wk "accept")
+  ;; "n e b" '(org-roam-review-set-budding :wk "set budding")
+  ;; "n e e" '(org-roam-review-set-evergreen :wk "set evergreen")
+  ;; "n e r" '(org-roam-review :wk "review")
+  ;; "n e s" '(org-roam-review-set-seedling :wk "set seedling")
+  ;; "n e u" '(org-roam-review-bury :wk "bury")
+  ;; "n e x" '(org-roam-review-set-excluded :wk "set excluded")
 
   "n s" '(:ignore t :wk "Org roam consult")
   "n s i" '(consult-org-roam-backlinks :wk "incoming links")
