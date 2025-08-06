@@ -7,7 +7,6 @@
 (require 'null-keybinds)
 
 (use-package eldoc
-  :ensure nil  ; built-in
   :custom
   (eldoc-idle-delay 0.2)
   (eldoc-echo-area-use-multiline-p nil)
@@ -25,7 +24,6 @@
     'eglot-mode-map (kbd "M-h") #'eldoc-box-help-at-point))
 
 (use-package eglot
-  :ensure nil
   :after cape
   :hook
   (c-mode . eglot-ensure)
@@ -50,12 +48,11 @@
 
 (use-package eglot-booster
   :after eglot
-  :ensure (:host github :repo "jdtsmith/eglot-booster")
+  :vc (:url "https://github.com/jdtsmith/eglot-booster")
   :config
   (eglot-booster-mode))
 
 (use-package flymake
-  :ensure nil ; built-in
   :after eglot eldoc
   :custom
   (flymake-fringe-indicator-position 'right-fringe))

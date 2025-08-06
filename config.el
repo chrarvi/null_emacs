@@ -63,7 +63,7 @@
           gptel-backend (gptel-make-gh-copilot "Copilot")))
 
   (use-package ox-slack
-    :ensure (:host github :repo "titaniumbones/ox-slack"))
+    :vc (:url "https://github.com/titaniumbones/ox-slack"))
 
   (setq null-font-preset 'laptop
         null-font-big-preset 'laptop-big))

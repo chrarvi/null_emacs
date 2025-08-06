@@ -53,8 +53,7 @@
   (add-hook 'prog-mode-hook 'tempel-setup-capf)
   (add-hook 'text-mode-hook 'tempel-setup-capf))
 
-(use-package tempel-collection
-  :ensure t)
+(use-package tempel-collection)
 
 (use-package eglot-tempel
   :after eglot

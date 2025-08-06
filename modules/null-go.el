@@ -25,7 +25,6 @@
 ;;; Code:
 
 (use-package go-mode
-  :ensure nil ; built-in
   :custom
   (go-ts-mode-indent-offset 4))
 

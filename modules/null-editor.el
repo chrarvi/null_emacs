@@ -158,8 +158,7 @@
   :config
   (global-undo-tree-mode))
 
-(use-package dogears
-  :ensure t)
+(use-package dogears)
 
 (null-keybinds-leader-key-def
   :states 'normal

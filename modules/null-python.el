@@ -34,7 +34,6 @@
 
 (use-package python
   :defer t
-  :ensure nil  ; built-in
   :custom
   (python-indent-offset 4)
   :config

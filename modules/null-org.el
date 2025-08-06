@@ -125,7 +125,6 @@
     (set-face-attribute (car face) nil :font "Iosevka Nerd Font" :weight 'bold :height (cdr face))))
 
 (use-package org
-  :ensure nil
   :hook
   (org-mode . null/org-mode-setup)
   (org-babel-after-execute . org-redisplay-inline-images)
@@ -224,14 +223,13 @@
 
 (use-package ox-pandoc)
 
-(use-package ox-clip :ensure t)
+(use-package ox-clip)
 
 (use-package htmlize)
 
 (use-package orgit
   ;; Link to magit buffers in org mode
   :after org
-  :ensure t
   :hook (git-commit-post-finish  . orgit-store-after-commit)
   :custom
   (orgit-rev-description-format "%%N (%%R): %s (%ai)")
