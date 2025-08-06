@@ -26,8 +26,6 @@
   (no-littering-theme-backups)
   (setq custom-file (no-littering-expand-etc-file-name "custom.el")))
 
-(elpaca-wait)
-
 ;; Load the user configuration file if it exists
 (when (file-exists-p null-config-file)
   (load null-config-file nil 'nomessage))

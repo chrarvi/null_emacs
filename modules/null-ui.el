@@ -97,7 +97,7 @@
   :config
   (solaire-global-mode +1))
 
-(add-hook 'elpaca-after-init-hook (lambda () (load-theme null-theme t)))
+(add-hook 'after-init-hook (lambda () (load-theme null-theme t)))
 
 ;; initialize ui
 (null-ui-init)
