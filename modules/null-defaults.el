@@ -82,9 +82,6 @@
 
 (add-hook 'find-file-hooks 'no-junk-please-were-unixish)
 
-;; Helpful
-(use-package helpful)
-
 ;; Cleanup whitespace on save
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
@@ -93,19 +90,8 @@
   :config
   (require 'vlf-setup))
 
-(general-define-key
- :states 'normal
- "C-h f" 'helpful-callable
- "C-h v" 'helpful-variable
- "C-h k" 'helpful-key
- "K" 'helpful-at-point)
-
 (null-keybinds-leader-key-def
   :states 'normal
-  "h f" 'helpful-callable
-  "h v" 'helpful-variable
-  "h k" 'helpful-key
-  "h d" 'helpful-at-point
   "h c" 'describe-char
   "h M" 'man)
 
