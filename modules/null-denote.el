@@ -37,13 +37,24 @@
   (denote-directory "~/notes")
   (denote-known-keywords '("work")))
 
+(use-package denote-journal
+  :after denote
+  :hook (calendar-mode . denote-journal-calendar-mode)
+  :config
+  (setq denote-journal-directory
+        (expand-file-name "journal" denote-directory))
+  (setq denote-journal-keyword "journal"))
+
 (null-keybinds-leader-key-def
   :keymaps 'global-map
   "n w" '(:ignore t :wk "Denote")
   "n w f" 'denote-open-or-create
   "n w i" 'denote-insert-link
   "n w R" 'denote-rename-file
-  "n w c" 'denote-create-note)
+  "n w c" 'denote-create-note
+
+  "n w j" 'denote-journal-new-or-existing-entry
+  "n w J" 'denote-journal-new-entry)
 
 (provide 'null-denote)
 
