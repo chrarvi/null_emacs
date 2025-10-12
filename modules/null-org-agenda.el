@@ -138,16 +138,8 @@
                                  ("[>]" . org-priority)
                                  ("[?]" . org-table)
                                  ("[X]" . org-done)
-                                 ("[-]" . org-distant-deadline)))
+                                 ("[-]" . org-distant-deadline))))
 
-  ;; Capture templates
-  (setq org-capture-templates
-        '(("t" "Personal todo" entry
-           (file+headline null/org-capture-todo-file "Inbox")
-           "* TODO %?\n%i\n%a" :prepend t)
-          ("c" "To clocked task" item
-           (clock)
-           "- %?"))))
 
 ;; Cleaner agenda
 (with-eval-after-load 'org

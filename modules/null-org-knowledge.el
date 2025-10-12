@@ -103,70 +103,11 @@
   :no-require
   :config (citar-embark-mode))
 
-(use-package org-roam
-  :after org
-  :init
-  (setq org-roam-v2-ack t)
-  :hook
-  (org-roam-find-file . balance-windows)
-  (org-follow-link . balance-windows)
-  :custom
-  (org-roam-directory (expand-file-name "articles" null/orbit-directory))
-  (org-roam-auto-replace-fuzzy-links nil)
-  (org-roam-database-connector 'sqlite-builtin)
-  (org-roam-completion-everywhere nil)
-  (org-roam-db-autosync-mode t)
-  :config
-  (add-hook 'org-roam-mode-hook #'visual-line-mode)
-  (setq org-roam-capture-templates
-        `(("l" "lecture note" plain
-           (file ,(expand-file-name "templates/lecture_note.org" null/orbit-directory))
-           :target (file "%<%Y%m%d%H%M%S>-${slug}.org")
-           :unnarrowed t)
-          ("p" "permanent note" plain
-           (file ,(expand-file-name "templates/basic.org" null/orbit-directory))
-           :target (file "%<%Y%m%d%H%M%S>-${slug}.org")
-           :unnarrowed t)
-          ("m" "metanote" plain
-           (file ,(expand-file-name "templates/metanote.org" null/orbit-directory))
-           :target (file "%<%Y%m%d%H%M%S>-${slug}.org")
-           :unnarrowed t)
-          ("r" "paper note" plain
-           (file ,(expand-file-name "templates/paper.org" null/orbit-directory))
-           :target (file "paper_${slug}.org")
-           :unnarrowed t)
-          ("n" "notebook" plain
-           (file ,(expand-file-name "templates/notebook.org" null/orbit-directory))
-           :target (file "%<%Y%m%d%H%M%S>-${slug}.org")
-           :unnarrowed t)))
-
-  (setq org-roam-dailies-directory "daily"
-        org-roam-dailies-capture-templates
-        '(("d" "default" entry "* %?" :unnarrowed t :target
-           (file+head "daily_%<%Y_%m_%d>.org" "#+filetags: :daily:\n#+title: %<%Y-%m-%d>\n\n")))))
-
-(use-package citar-org-roam
-  :after citar org-roam
-  :no-require
-  :config (citar-org-roam-mode)
-  (setq citar-org-roam-note-title-template "${author:%etal} :: ${title}"
-        citar-org-roam-capture-template-key "r"))
-
-(use-package consult-org-roam
-
-   :after org-roam
-   :init
-   (require 'consult-org-roam)
-   ;; Activate the minor mode
-   (consult-org-roam-mode 1)
-   :custom
-   ;; Use `ripgrep' for searching with `consult-org-roam-search'
-   (consult-org-roam-grep-func #'consult-ripgrep)
-   ;; Configure a custom narrow key for `consult-buffer'
-   (consult-org-roam-buffer-narrow-key ?r)
-   ;; Display org-roam buffers right after non-org-roam buffers
-   ;; in consult-buffer (and not down at the bottom)
-   (consult-org-roam-buffer-after-buffers t))
+(use-package citar-org-node
+  :vc ( :url "https://github.com/krisbalintona/citar-org-node.git"
+        :rev :newest)
+  :config (citar-org-node-mode)
+  (setq citar-org-node-note-title-template "${author:%etal} :: ${title}"))
 
 (defun null/truncate-string-to-width (str max-width &optional ellipsis)
   "Truncate STR to MAX-WIDTH characters, considering display width.
@@ -205,7 +146,6 @@ If STR is nil, treat it as an empty string."
   (org-mem-updater-mode))
 
 (use-package org-node
-  :after org
   :custom
   (org-node-extra-id-dirs (list (expand-file-name "articles" null/orbit-directory)))
   (org-node-alter-candidates t)
@@ -223,29 +163,45 @@ If STR is nil, treat it as an empty string."
               (propertize padded-tags 'face 'font-lock-keyword-face)
               (propertize filepath 'face 'org-tag))))))
 
-  (org-node-creation-fn #'org-node-new-via-roam-capture)
+  (org-node-creation-fn #'org-capture)
   (org-node-file-slug-fn #'org-node-slugify-like-roam-default)
   (org-node-file-timestamp-format "%Y%m%d%H%M%S-")
+
   :config
-  (org-node-cache-mode)
-  (org-node-roam-accelerator-mode)
+  (setq org-capture-templates
+        `(("l" "Lecture note"
+           plain (function org-node-capture-target)
+           (file ,(expand-file-name "templates/lecture_note.org" null/orbit-directory))
+           :empty-lines-after 1
+           :unnarrowed t)
+
+          ("p" "Permanent note"
+           plain (function org-node-capture-target)
+           (file ,(expand-file-name "templates/basic.org" null/orbit-directory))
+           :empty-lines-after 1
+           :unnarrowed t)
+
+          ("m" "Metanote"
+           plain (function org-node-capture-target)
+           (file ,(expand-file-name "templates/metanote.org" null/orbit-directory))
+           :empty-lines-after 1
+           :unnarrowed t)
+
+          ("r" "Paper note"
+           plain (function org-node-capture-target)
+           (file ,(expand-file-name "templates/paper.org" null/orbit-directory))
+           :empty-lines-after 1
+           :unnarrowed t)
+
+          ("n" "Notebook"
+           plain (function org-node-capture-target)
+           (file ,(expand-file-name "templates/notebook.org" null/orbit-directory))
+           :empty-lines-after 1
+           :unnarrowed t)))
+
+
+  (org-node-cache-mode +1)
   (org-node-complete-at-point-mode t))
-
-;; Review dependencies
-(use-package ht)
-(use-package ts)
-
-;; (use-package org-roam-review
-;;   :vc (:url "https://github.com/chrisbarrett/nursery" :lisp-dir "lisp" :main-file "org-roam-review.el")
-;;   :after (org-roam org-drill ts)
-;;   :hook (org-roam-capture-new-node . org-roam-review-set-seedling)
-;;   :commands (org-roam-review
-;;              org-roam-review-list-by-maturity
-;;              org-roam-review-list-recently-added)
-;;   :general
-;;   (:states '(normal) :keymaps 'org-roam-review-mode-map
-;;            "TAB" 'magit-section-cycle
-;;            "g r" 'org-roam-review-refresh))
 
 (defcustom writeroom-text-scale 2.0 "Scale increase for text in writeroom." :type 'integer)
 
@@ -277,53 +233,17 @@ If STR is nil, treat it as an empty string."
 
 (null-keybinds-leader-key-def
   :states 'normal
-  "n r" '(:ignore t :wk "Org roam")
+  "n r" '(:ignore t :wk "Org node")
   "n r f" '(org-node-find :wk "Find node")
-  ;; "n r R" '(org-roam-rewrite-rename :wk "Rename node")
-  "n r S" '(org-roam-db-sync :wk "Sync roam database")
   "n r a" '(org-node-alias-add :wk "Add alias")
   "n r c" '(citar-open :wk "Find cite")
   "n r n" '(citar-open-note :wk "Find cite note")
   "n r p" '(citar-open-files :wk "Find cite pdf")
   "n r i" '(org-node-insert-link :wk "Insert node")
   "n r r" '(org-node-visit-random :wk "Random node")
-  "n r s" '(org-roam-buffer-toggle :wk "Toggle org roam status buffer")
   "n r t" '(org-node-tag-add :wk "Add tag")
-  "n r u" '(org-roam-ui-open :wk "Open org roam ui")
-
-  "n c" '(:ignore t :wk "Org roam capture")
-  "n c p" '((lambda () (interactive) (org-roam-capture :keys "p")) :wk "permanent note")
-  "n c l" '((lambda () (interactive) (org-roam-capture :keys "l")) :wk "lecture")
-  "n c m" '((lambda () (interactive) (org-roam-capture :keys "m")) :wk "metanote")
-  "n c r" '((lambda () (interactive) (org-roam-capture :keys "r")) :wk "paper")
-  "n c n" '((lambda () (interactive) (org-roam-capture :keys "n")) :wk "notebook")
-
-  "n a" '(:ignore t :wk "Org roam attach")
+  "n a" '(:ignore t :wk "Org node attach")
   "n a c" '(null/orbit-org-download-screenshot :wk "Download screenshot")
-
-  "n d" '(:ignore t :wk "Org roam dailies")
-  "n d T" '(org-roam-dailies-capture-today :wk "capture today")
-  "n d Y" '(org-roam-dailies-capture-yesterday :wk "capture yesterday")
-  "n d D" '(org-roam-dailies-capture-date :wk "capture by date")
-  "n d t" '(org-roam-dailies-find-today :wk "find today")
-  "n d y" '(org-roam-dailies-find-yesterday :wk "find yesterday")
-  "n d d" '(org-roam-dailies-find-date :wk "find by date")
-  "n d p" '(org-roam-dailies-goto-previous-note :wk "find previous note")
-  "n d n" '(org-roam-dailies-goto-next-note :wk "find next note")
-
-  ;; "n e" '(:ignore t :wk "Org roam review")
-  ;; "n e a" '(org-roam-review-accept :wk "accept")
-  ;; "n e b" '(org-roam-review-set-budding :wk "set budding")
-  ;; "n e e" '(org-roam-review-set-evergreen :wk "set evergreen")
-  ;; "n e r" '(org-roam-review :wk "review")
-  ;; "n e s" '(org-roam-review-set-seedling :wk "set seedling")
-  ;; "n e u" '(org-roam-review-bury :wk "bury")
-  ;; "n e x" '(org-roam-review-set-excluded :wk "set excluded")
-
-  "n s" '(:ignore t :wk "Org roam consult")
-  "n s i" '(consult-org-roam-backlinks :wk "incoming links")
-  "n s o" '(consult-org-roam-forward-links :wk "outgoing links")
-  "n s /" '(consult-org-roam-search :wk "search")
 
   "t z" '(writeroom-mode :wk "Toggle writeroom mode")
   "t Z" '(global-writeroom-mode :wk "Toggle global writeroom mode")
