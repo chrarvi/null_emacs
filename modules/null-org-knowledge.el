@@ -104,6 +104,7 @@
   :config (citar-embark-mode))
 
 (use-package citar-org-node
+  :after org-node org-mem
   :vc ( :url "https://github.com/krisbalintona/citar-org-node.git"
         :rev :newest)
   :config (citar-org-node-mode)
@@ -150,58 +151,63 @@ If STR is nil, treat it as an empty string."
   (org-node-extra-id-dirs (list (expand-file-name "articles" null/orbit-directory)))
   (org-node-alter-candidates t)
 
-  (org-node-affixation-fn
-   (defun my-prefix-with-tag (node title)
-     "Let NODE's tags be right-aligned and prefix TITLE."
-     (let* ((tags (when-let ((tags (org-node-get-tags-local node)))
-                    (concat "#" (string-join tags " #"))))
-            (padded-title (null/pad-or-truncate-string title 150 "..."))
-            (padded-tags (null/pad-or-truncate-string tags 30 "..."))
-            (filepath (f-filename (org-mem-file-truename node))))
-       (list nil padded-title
-             (concat
-              (propertize padded-tags 'face 'font-lock-keyword-face)
-              (propertize filepath 'face 'org-tag))))))
+  ;; (org-node-affixation-fn
+  ;;  (defun my-prefix-with-tag (node title)
+  ;;    "Let NODE's tags be right-aligned and prefix TITLE."
+  ;;    (let* ((tags (when-let ((tags (org-node-get-tags-local node)))
+  ;;                   (concat "#" (string-join tags " #"))))
+  ;;           (padded-title (null/pad-or-truncate-string title 150 "..."))
+  ;;           (padded-tags (null/pad-or-truncate-string tags 30 "..."))
+  ;;           (filepath (f-filename (org-mem-file-truename node))))
+  ;;      (list nil padded-title
+  ;;            (concat
+  ;;             (propertize padded-tags 'face 'font-lock-keyword-face)
+  ;;             (propertize filepath 'face 'org-tag))))))
 
   (org-node-creation-fn #'org-capture)
   (org-node-file-slug-fn #'org-node-slugify-like-roam-default)
   (org-node-file-timestamp-format "%Y%m%d%H%M%S-")
 
   :config
+  (org-node-cache-mode)
+  (org-node-complete-at-point-mode t)
   (setq org-capture-templates
         `(("l" "Lecture note"
            plain (function org-node-capture-target)
            (file ,(expand-file-name "templates/lecture_note.org" null/orbit-directory))
+           :jump-to-captured t
            :empty-lines-after 1
            :unnarrowed t)
 
           ("p" "Permanent note"
            plain (function org-node-capture-target)
            (file ,(expand-file-name "templates/basic.org" null/orbit-directory))
+           :jump-to-captured t
            :empty-lines-after 1
            :unnarrowed t)
 
           ("m" "Metanote"
            plain (function org-node-capture-target)
            (file ,(expand-file-name "templates/metanote.org" null/orbit-directory))
+           :jump-to-captured t
            :empty-lines-after 1
            :unnarrowed t)
 
           ("r" "Paper note"
            plain (function org-node-capture-target)
            (file ,(expand-file-name "templates/paper.org" null/orbit-directory))
+           :jump-to-captured t
            :empty-lines-after 1
            :unnarrowed t)
 
           ("n" "Notebook"
            plain (function org-node-capture-target)
            (file ,(expand-file-name "templates/notebook.org" null/orbit-directory))
+           :jump-to-captured t
            :empty-lines-after 1
-           :unnarrowed t)))
+           :unnarrowed t))))
 
 
-  (org-node-cache-mode +1)
-  (org-node-complete-at-point-mode t))
 
 (defcustom writeroom-text-scale 2.0 "Scale increase for text in writeroom." :type 'integer)
 
@@ -214,6 +220,7 @@ If STR is nil, treat it as an empty string."
   (writeroom-width 60)
   (writeroom-fullscreen-effect 'maximized)
   (writeroom-restore-window-config t)
+  (writeroom-major-modes '(text-mode prog-mode))
   :config
   ;; adjust writeroom one font resize
   (advice-add 'text-scale-adjust :after
