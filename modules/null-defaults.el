@@ -54,6 +54,7 @@
   (super-save-idle-duration 10)
   (auto-save-default nil)
   (super-save-remote-files nil)
+  (super-save-silent t)
   :config
   (super-save-mode +1))
 
