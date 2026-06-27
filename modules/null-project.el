@@ -167,6 +167,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 (null-keybinds-leader-key-def
   :states '(normal visual)
   "p c" '(project-compile :wk "Compile project")
+  "p r" '(project-recompile :wk "Reompile project")
   "p C" '(kill-compilation :wk "Kill compilation")
   "p f" '(project-find-file :wk "Find file in project")
   "p F" '(consult-project-extra-find :wk "Find file in project")
