@@ -95,7 +95,9 @@
   (global-treesit-auto-mode +1))
 
 (use-package evil-ts
-  :vc (:url "https://github.com/foxfriday/evil-ts"))
+  :vc (:url "https://github.com/foxfriday/evil-ts")
+  :config
+  (evil-ts-mode +1))
 
 (provide 'null-treesit)
 
